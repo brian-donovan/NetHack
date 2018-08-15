@@ -19,10 +19,10 @@ NHSROOT=.
 # MAKE = make
 
 # make NetHack
-#PREFIX	 = /usr
+PREFIX	 = /usr
 GAME     = nethack
 # GAME     = nethack.prg
-#GAMEUID  = games
+GAMEUID  = games
 GAMEGRP  = games
 
 # Permissions - some places use setgid instead of setuid, for instance
@@ -41,8 +41,8 @@ VARDIRPERM = 0775
 # therefore there should not be anything in HACKDIR that you want to keep
 # (if there is, you'll have to do the installation by hand or modify the
 # instructions)
-#HACKDIR  = $(PREFIX)/games/lib/$(GAME)dir
-#VARDIR  = $(HACKDIR)
+HACKDIR  = $(PREFIX)/games/lib/$(GAME)dir
+VARDIR  = $(HACKDIR)
 # Where nethack.sh in installed.  If this is not defined, the wrapper is not used.
 #SHELLDIR = $(PREFIX)/games
 
