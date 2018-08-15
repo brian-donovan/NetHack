@@ -45,7 +45,7 @@
 #if !defined(NOTTYGRAPHICS)
 #define TTY_GRAPHICS /* good old tty based graphics */
 #endif
-/* #define X11_GRAPHICS */   /* X11 interface */
+#define X11_GRAPHICS   /* X11 interface */
 /* #define QT_GRAPHICS */    /* Qt interface */
 /* #define GNOME_GRAPHICS */ /* Gnome interface */
 /* #define MSWIN_GRAPHICS */ /* Windows NT, CE, Graphics */
@@ -127,7 +127,7 @@
  * would allow:
  *  xpmtoppm <x11tiles.xpm | pnmscale 1.25 | ppmquant 90 >x11tiles_big.xpm
  */
-/* # define USE_XPM */ /* Disable if you do not have the XPM library */
+#define USE_XPM /* Disable if you do not have the XPM library */
 #ifdef USE_XPM
 #define GRAPHIC_TOMBSTONE /* Use graphical tombstone (rip.xpm) */
 #endif
@@ -256,11 +256,11 @@
 
 #if defined(UNIX) && !defined(ZLIB_COMP) && !defined(COMPRESS)
 /* path and file name extension for compression program */
-#define COMPRESS "/usr/bin/compress" /* Lempel-Ziv compression */
-#define COMPRESS_EXTENSION ".Z"      /* compress's extension */
+//#define COMPRESS "/usr/bin/compress" /* Lempel-Ziv compression */
+//#define COMPRESS_EXTENSION ".Z"      /* compress's extension */
 /* An example of one alternative you might want to use: */
-/* #define COMPRESS "/usr/local/bin/gzip" */ /* FSF gzip compression */
-/* #define COMPRESS_EXTENSION ".gz" */       /* normal gzip extension */
+#define COMPRESS "/usr/local/bin/gzip" /* FSF gzip compression */
+#define COMPRESS_EXTENSION ".gz"       /* normal gzip extension */
 #endif
 
 #ifndef COMPRESS
@@ -304,7 +304,7 @@
  *      a tar-like file, thus making a neater installation.  See *conf.h
  *      for detailed configuration.
  */
-/* #define DLB */ /* not supported on all platforms */
+#define DLB /* not supported on all platforms */
 
 /*
  *      Defining REPRODUCIBLE_BUILD causes 'util/makedefs -v' to construct

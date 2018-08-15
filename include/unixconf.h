@@ -131,7 +131,7 @@
  * "extra output" method is used, but not all systems provide access to
  * a fine-grained timer.
  */
-/* #define TIMED_DELAY */ /* usleep() */
+#define TIMED_DELAY /* usleep() */
 #endif
 #if defined(MACOSX) && !defined(TIMED_DELAY)
 #define TIMED_DELAY
