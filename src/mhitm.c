@@ -1560,8 +1560,9 @@ int mdead;
                 ? "ZOT! %s is struck by a hail of missiles!"
                 : "%s is struck by a hail of magic missiles!", Monnam(magr));
             }
+            goto assess_dmg;
         }
-        goto assess_dmg;
+        break;
     case AD_ENCH: /* KMH -- remove enchantment (disenchanter) */
         if (mhit && !mdef->mcan && otmp) {
             (void) drain_item(otmp, FALSE);
