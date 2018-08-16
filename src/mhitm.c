@@ -1547,6 +1547,21 @@ int mdead;
         if (!rn2(6))
             acid_damage(MON_WEP(magr));
         goto assess_dmg;
+    case AD_MAGM:
+        /* wrath of gods for attacking Oracle */
+        if (resists_magm(magr)) {
+            if (canseemon(magr)) {
+                shieldeff(magr->mx, magr->my);
+                pline("%s narrowly avoids a hail of magic missiles!", Monnam(magr));
+            }
+        } else {
+            if (canseemon(magr)) {
+                pline(magr->data == &mons[PM_WOODCHUCK] 
+                ? "ZOT! %s is struck by a hail of missiles!"
+                : "%s is struck by a hail of magic missiles!", Monnam(magr));
+            }
+        }
+        goto assess_dmg;
     case AD_ENCH: /* KMH -- remove enchantment (disenchanter) */
         if (mhit && !mdef->mcan && otmp) {
             (void) drain_item(otmp, FALSE);

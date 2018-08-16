@@ -85,13 +85,23 @@
 #define is_orc(ptr) (((ptr)->mflags2 & M2_ORC) != 0L)
 #define is_human(ptr) (((ptr)->mflags2 & M2_HUMAN) != 0L)
 #define your_race(ptr) (((ptr)->mflags2 & urace.selfmask) != 0L)
-#define is_bat(ptr)                                         \
-    ((ptr) == &mons[PM_BAT] || (ptr) == &mons[PM_GIANT_BAT] \
+#define is_bat(ptr)                                               \
+    ((ptr) == &mons[PM_BAT] || (ptr) == &mons[PM_GIANT_BAT]       \
      || (ptr) == &mons[PM_VAMPIRE_BAT])
+#define is_cat(ptr)                                               \
+    ((ptr) == &mons[PM_KITTEN] || (ptr) == &mons[PM_HOUSECAT]     \
+     || (ptr) == &mons[PM_LARGE_CAT])
+#define is_rat(ptr)                                               \
+    ((ptr) == &mons[PM_SEWER_RAT] || (ptr) == &mons[PM_GIANT_RAT] \
+     || (ptr) == &mons[PM_RABID_RAT])
+#define is_dog(ptr)                                               \
+    ((ptr) == &mons[PM_LITTLE_DOG] || (ptr) == &mons[PM_DOG]      \
+     || (ptr) == &mons[PM_LARGE_DOG])
 #define is_bird(ptr) ((ptr)->mlet == S_BAT && !is_bat(ptr))
 #define is_giant(ptr) (((ptr)->mflags2 & M2_GIANT) != 0L)
 #define is_golem(ptr) ((ptr)->mlet == S_GOLEM)
 #define is_domestic(ptr) (((ptr)->mflags2 & M2_DOMESTIC) != 0L)
+#define is_angel(ptr) ((ptr)->mlet == S_ANGEL)
 #define is_demon(ptr) (((ptr)->mflags2 & M2_DEMON) != 0L)
 #define is_mercenary(ptr) (((ptr)->mflags2 & M2_MERC) != 0L)
 #define is_male(ptr) (((ptr)->mflags2 & M2_MALE) != 0L)

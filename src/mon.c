@@ -1479,15 +1479,47 @@ mm_aggression(magr, mdef)
 struct monst *magr, /* monster that is currently deciding where to move */
              *mdef; /* another monster which is next to it */
 {
-    /* supposedly purple worms are attracted to shrieking because they
-       like to eat shriekers, so attack the latter when feasible */
-    if (magr->data == &mons[PM_PURPLE_WORM]
-        && mdef->data == &mons[PM_SHRIEKER])
-        return ALLOW_M | ALLOW_TM;
-    /* Various other combinations such as dog vs cat, cat vs rat, and
-       elf vs orc have been suggested.  For the time being we don't
-       support those. */
-    return 0L;
+    long aggro = 0L;
+    struct permonst *pa = magr->data,*pd = mdef->data;
+    
+    /* Allow monsters to attack each other when appropriate */
+    const int condarray[] = {
+        /* purple worms and shriekers */
+        (pa == &mons[PM_PURPLE_WORM] && pd == &mons[PM_SHRIEKER]),
+        /* elves and orcs */
+        (is_elf(pa) && is_orc(pd)) || (is_orc(pa) && is_elf(pd)),
+        /* elves and dwarves */
+        (is_elf(pa) && is_dwarf(pd)) || (is_dwarf(pa) && is_elf(pd)),
+        /* orcs and dwarves */
+        (is_orc(pa) && is_dwarf(pd)) || (is_dwarf(pa) && is_orc(pd)),
+        /* orcs and hobbits */
+        (is_orc(pa) && pd == &mons[PM_HOBBIT])
+        || (pa == &mons[PM_HOBBIT] && is_orc(pd)),
+        /* cats and their prey */
+        (is_cat(pa) && (is_bird(pd) || is_rat(pd))),
+        /* cats and dogs */
+        ((is_dog(pa) && is_cat(pd)) || (is_cat(pa) && is_dog(pd))),
+        /* angels and demons */
+        ((is_angel(pa) && is_demon(pd)) || (is_demon(pa) && is_angel(pd))),
+        /* ravens and eyes */
+        (pa == &mons[PM_RAVEN] && pd == &mons[PM_FLOATING_EYE]),
+        /* woodchucks and Oracles */
+        (pa == &mons[PM_WOODCHUCK] && pd == &mons[PM_ORACLE]),
+        /* finally, allow quest guardians to combat hostiles */
+        (pa->msound==MS_GUARDIAN && mdef->mpeaceful==FALSE)
+        || (pd->msound==MS_GUARDIAN && magr->mpeaceful==FALSE)
+    };
+    const int len = sizeof(condarray) / sizeof(condarray[0]);
+    
+    /* for the above cases, return a flag to allow attacks */
+    for (int i = 0; i < len; i++) {
+        if (condarray[i]) {
+            aggro = ALLOW_M | ALLOW_TM;
+            break;
+        }
+    }
+    
+    return aggro;
 }
 
 /* Monster displacing another monster out of the way */
