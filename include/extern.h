@@ -27,7 +27,7 @@ E void NDECL(newgame);
 E void FDECL(welcome, (BOOLEAN_P));
 E time_t NDECL(get_realtime);
 E int FDECL(argcheck, (int, char **, enum earlyarg));
-E boolean NDECL(touching_hated);
+E boolean NDECL(hates_gear);
 
 /* ### apply.c ### */
 

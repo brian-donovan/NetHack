@@ -528,7 +528,7 @@ int wtcap;
                 heal = -1;
         } else if (u.mh < u.mhmax) {
             if (Regeneration || (encumbrance_ok
-                && touching_hated() && !(moves % 20L))) {
+                && hates_gear() && !(moves % 20L))) {
                 heal = 1;
             }
         }
@@ -545,7 +545,7 @@ int wtcap;
            once u.mh reached u.mhmax; that may have been convenient
            for the player, but it didn't make sense for gameplay...] */
         if (u.uhp < u.uhpmax && (Regeneration || encumbrance_ok)
-            && touching_hated()) {
+            && hates_gear()) {
             if (u.ulevel > 9) {
                 if (!(moves % 3L)) {
                     int Con = (int) ACURR(A_CON);
