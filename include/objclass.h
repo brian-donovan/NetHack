@@ -80,11 +80,14 @@ struct objclass {
 #define is_metallic(otmp)                    \
     (objects[otmp->otyp].oc_material >= IRON \
      && objects[otmp->otyp].oc_material <= MITHRIL)
+#define is_hated_material(otmp, omat)                       \
+    ((omat == IRON && !otmp->oartifact                      \
+     && objects[otmp->otyp].oc_material == IRON)            \
+     || omat != IRON && objects[otmp->otyp].oc_material == omat)
 
 /* primary damage: fire/rust/--- */
 /* is_flammable(otmp), is_rottable(otmp) in mkobj.c */
 #define is_rustprone(otmp) (objects[otmp->otyp].oc_material == IRON)
-
 /* secondary damage: rot/acid/acid */
 #define is_corrodeable(otmp)                   \
     (objects[otmp->otyp].oc_material == COPPER \

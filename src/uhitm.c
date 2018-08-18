@@ -281,16 +281,16 @@ int *attk_count, *role_roll_penalty;
             tmp += (u.ulevel / 3) + 2;
     }
     if (maybe_polyd(is_elf(youmonst.data), Race_if(PM_ELF))) {
-        /* Elves are graceful */
+        /* Elves are graceful... */
         tmp++;
-        /* and they get an extra hit bonus against orcs */
+        /* ...and they get an extra hit bonus against orcs... */
         if (is_orc(mtmp->data)) {
             tmp++;
         }
-        /* but they are averse to cold iron */
+        /* ...but they are averse to cold iron */
         if (weapon && !weapon->oartifact
-            && objects[weapon->otyp].oc_material == IRON)) {
-                tmp -= 4;
+            && objects[weapon->otyp].oc_material == IRON) {
+            tmp -= 3;
         }
     }
 

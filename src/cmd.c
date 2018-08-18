@@ -2349,8 +2349,22 @@ int final;
         you_can("walk through walls", from_what(PASSES_WALLS));
 
     /*** Physical attributes ***/
-    if (Regeneration)
+    if (Regeneration) {
         enl_msg("You regenerate", "", "d", "", from_what(REGENERATION));
+        if (hates_gear()) {
+            if (maybe_polyd(is_elf(youmonst.data), Race_if(PM_ELF))) {
+                you_are("touching cold iron, slowing your regeneration", "");
+            } else if (hates_silver(youmonst.data)) {
+                you_are("touching silver, slowing your regeneration", "");
+            }
+        }
+    } else if (hates_gear()) {
+	    if (maybe_polyd(is_elf(youmonst.data), Race_if(PM_ELF))) {
+            you_are("touching cold iron, and cannot regenerate health", "");
+        } else if (hates_silver(youmonst.data)) {
+            you_are("touching silver, and cannot regenerate health", "");
+        }
+	}
     if (Slow_digestion)
         you_have("slower digestion", from_what(SLOW_DIGESTION));
     if (u.uhitinc)
@@ -2433,6 +2447,9 @@ int final;
         you_can("not change from your current form", from_what(UNCHANGING));
     if (Hate_silver)
         you_are("harmed by silver", "");
+    if (maybe_polyd(is_elf(youmonst.data), Race_if(PM_ELF))) {
+        you_are("averse to iron", "");
+    }
     /* movement and non-armor-based protection */
     if (Fast)
         you_are(Very_fast ? "very fast" : "fast", from_what(FAST));

@@ -152,7 +152,8 @@ register boolean special;
         set_malign(mtmp); /* peaceful may have changed again */
 
         /* default equipment; much of it will be overridden below */
-        weapon = !rn2(2) ? LONG_SWORD : rnd_class(SPEAR, BULLWHIP);
+        weapon = !rn2(2) ? (is_elf(ptr) ? ELVEN_BROADSWORD : LONG_SWORD)
+                         : rnd_class(SPEAR, BULLWHIP);
         armor  = rnd_class(GRAY_DRAGON_SCALE_MAIL, YELLOW_DRAGON_SCALE_MAIL);
         cloak  = !rn2(8) ? STRANGE_OBJECT
                          : rnd_class(OILSKIN_CLOAK, CLOAK_OF_DISPLACEMENT);
@@ -211,7 +212,7 @@ register boolean special;
         case PM_PRIEST:
         case PM_PRIESTESS:
             if (rn2(2))
-                weapon = MACE;
+                weapon = is_elf(ptr) ? QUARTERSTAFF : MACE;
             if (rn2(2))
                 armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
             if (rn2(4))
@@ -226,8 +227,11 @@ register boolean special;
                 weapon = ELVEN_DAGGER;
             break;
         case PM_ROGUE:
-            if (rn2(2))
-                weapon = rn2(2) ? SHORT_SWORD : ORCISH_DAGGER;
+            if (rn2(2)) {
+                weapon = is_elf(ptr)
+                    ? ELVEN_DAGGER
+                    : (is_orc(ptr) ? ORCISH_DAGGER : SHORT_SWORD);
+            }
             break;
         case PM_SAMURAI:
             if (rn2(2))

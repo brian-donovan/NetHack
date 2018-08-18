@@ -442,6 +442,71 @@ boolean resuming;
     }
 }
 
+/* As per UnNetHack, elf players cannot regenerate while touching cold iron, and
+ * silver-hating players cannot regenerate while in direct contact with silver.
+ * Artifacts are not considered by the game to be cold iron. */
+STATIC_OVL boolean
+hates_gear()
+{
+    int hated = 0;  /* hated material, default is none */
+    boolean result = TRUE;
+
+    /* Check for hated materials */
+    if (maybe_polyd(is_elf(youmonst.data), Race_if(PM_ELF))) {
+        hated = IRON;
+    } else if (hates_silver(youmonst.data)) {
+        hated = SILVER;
+    } else {
+        return FALSE;
+    }
+
+    /* Find out if the player is wearing anything they hate */
+    do {
+        if (uarmg) {
+            if (is_hated_material(uarmg, hated)) {
+                /* no regeneration if hated material touches a player's skin */
+                break;
+            }
+        } else {
+            /* no gloves, check weapon and shield */
+            if ((uwep && is_hated_material(uwep, hated))
+                || (uarms && is_hated_material(uarms, hated))) {
+                break;
+            }
+        }
+        if (uarmu) {
+            if (is_hated_material(uarmu, hated)) {
+                break;
+            }
+        } else {
+            /* no under-armor, check armor */
+            if (uarm) {
+                if (is_hated_material(uarm, hated)) {
+                    break;
+                }
+            } else {
+                /* no armor, check amulets and cloaks */
+                if ((uarmc && is_hated_material(uarmc, hated))
+                    || (uamul && is_hated_material(uamul, hated))) {
+                    break;
+                }
+            }
+        }
+        /* Check the rest of the equipment - helmet, shoes, rings, and any 2h */
+        if ((uswapwep && u.twoweap && is_hated_material(uswapwep, hated))
+            || (uarmh && is_hated_material(uarmh, hated))
+            || (uarmf && is_hated_material(uarmf, hated))
+            || (uleft && is_hated_material(uleft, hated))
+            || (uright && is_hated_material(uright, hated))) {
+            break;
+        }
+        /* All checks have passed, player isn't wearing anything they hate. */
+        result = FALSE;
+    } while (result == TRUE);
+
+    return result;
+}
+
 /* maybe recover some lost health (or lose some when an eel out of water) */
 STATIC_OVL void
 regen_hp(wtcap)
@@ -462,8 +527,10 @@ int wtcap;
                 && (!Half_physical_damage || !(moves % 2L)))
                 heal = -1;
         } else if (u.mh < u.mhmax) {
-            if (Regeneration || (encumbrance_ok && !(moves % 20L)))
+            if (Regeneration || (encumbrance_ok
+                && touching_hated() && !(moves % 20L))) {
                 heal = 1;
+            }
         }
         if (heal) {
             context.botl = 1;
@@ -477,11 +544,11 @@ int wtcap;
            no !Upolyd check here, so poly'd hero recovered lost u.uhp
            once u.mh reached u.mhmax; that may have been convenient
            for the player, but it didn't make sense for gameplay...] */
-        if (u.uhp < u.uhpmax && (encumbrance_ok || Regeneration)) {
+        if (u.uhp < u.uhpmax && (Regeneration || encumbrance_ok)
+            && touching_hated()) {
             if (u.ulevel > 9) {
                 if (!(moves % 3L)) {
                     int Con = (int) ACURR(A_CON);
-
                     if (Con <= 12) {
                         heal = 1;
                     } else {
@@ -494,9 +561,10 @@ int wtcap;
                 if (!(moves % (long) ((MAXULEV + 12) / (u.ulevel + 2) + 1)))
                     heal = 1;
             }
-            if (Regeneration && !heal)
+            /* Regeneration ensures the player regains some health each turn */
+            if (Regeneration && !heal) {
                 heal = 1;
-
+            }
             if (heal) {
                 context.botl = 1;
                 u.uhp += heal;
