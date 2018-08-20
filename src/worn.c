@@ -1009,8 +1009,10 @@ struct obj *obj;
         return 1;
     /* Unacceptable Exceptions: */
     /* Checks for object that certain races should never use go here */
-    /*  return -1; */
-
+    if ((is_elf(ptr) && !is_elven_armor(obj))
+        || (is_demon(ptr) && objects[obj->otyp].oc_material == SILVER)) {
+        return -1;
+    }
     return 0;
 }
 /*worn.c*/

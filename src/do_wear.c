@@ -1789,7 +1789,7 @@ accessory_or_armor_on(obj)
 struct obj *obj;
 {
     long mask = 0L;
-    boolean armor, ring, eyewear;
+    boolean armor, ring, eyewear, itchy;
 
     if (obj->owornmask & (W_ACCESSORY | W_ARMOR)) {
         already_wearing(c_that_);
@@ -1799,6 +1799,7 @@ struct obj *obj;
     ring = (obj->oclass == RING_CLASS || obj->otyp == MEAT_RING);
     eyewear = (obj->otyp == BLINDFOLD || obj->otyp == TOWEL
                || obj->otyp == LENSES);
+    itchy = FALSE;
     /* checks which are performed prior to actually touching the item */
     if (armor) {
         if (!canwearobj(obj, &mask, TRUE))
@@ -1909,6 +1910,9 @@ struct obj *obj;
     if (!retouch_object(&obj, FALSE))
         return 1; /* costs a turn even though it didn't get worn */
 
+    /* Check for hated equipment before donning and check again afterward */
+    itchy = hates_gear();
+
     if (armor) {
         int delay;
 
@@ -1961,6 +1965,9 @@ struct obj *obj;
         /* feedback for ring or for amulet other than 'change' */
         if (give_feedback && is_worn(obj))
             prinv((char *) 0, obj, 0L);
+    }
+    if (is_worn(obj) && !itchy && hates_gear()) {
+        You_feel(Hallucination ? "bugs crawling all over." : "very itchy.");
     }
     return 1;
 }
@@ -2332,6 +2339,7 @@ do_takeoff()
 {
     struct obj *otmp = (struct obj *) 0;
     struct takeoff_info *doff = &context.takeoff;
+    boolean itchy = hates_gear();   /* check for removal of hated materials */
 
     context.takeoff.mask |= I_SPECIAL; /* set flag for cancel_doff() */
     if (doff->what == W_WEP) {
@@ -2394,6 +2402,12 @@ do_takeoff()
         impossible("do_takeoff: taking off %lx", doff->what);
     }
     context.takeoff.mask &= ~I_SPECIAL; /* clear cancel_doff() flag */
+
+    if (otmp && itchy && !hates_gear()) {
+            You_feel(Hallucination ? "the bugs go away."
+                                   : "the itching subside.");
+        }
+    }
 
     return otmp;
 }
@@ -2595,6 +2609,7 @@ destroy_arm(atmp)
 register struct obj *atmp;
 {
     register struct obj *otmp;
+    boolean itchy = hates_gear();
 #define DESTROY_ARM(o)                            \
     ((otmp = (o)) != 0 && (!atmp || atmp == otmp) \
              && (!obj_resists(otmp, 0, 90))       \
@@ -2649,6 +2664,10 @@ register struct obj *atmp;
     }
 
 #undef DESTROY_ARM
+    if (itchy && !hates_gear()) {
+        You_feel(Hallucination ? "the bugs go away."
+                               : "the itching subside.");
+    }
     stop_occupation();
     return 1;
 }

@@ -442,7 +442,8 @@ boolean resuming;
     }
 }
 
-/* As per UnNetHack, elf players cannot regenerate while touching cold iron, and
+/* Return TRUE if player is wearing/wielding something made of a hated material.
+ * As per UnNetHack, elf players cannot regenerate while touching cold iron, and
  * silver-hating players cannot regenerate while in direct contact with silver.
  * Artifacts are not considered by the game to be cold iron. */
 STATIC_OVL boolean
