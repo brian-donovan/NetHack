@@ -1408,6 +1408,7 @@ STATIC_OVL int
 armor_or_accessory_off(obj)
 struct obj *obj;
 {
+    boolean itchy = hates_gear();
     if (!(obj->owornmask & (W_ARMOR | W_ACCESSORY))) {
         You("are not wearing that.");
         return 0;
@@ -1461,6 +1462,10 @@ struct obj *obj;
         impossible("removing strange accessory?");
         if (obj->owornmask)
             remove_worn_item(obj, FALSE);
+    }
+    if (itchy && !hates_gear()) {
+        You_feel(Hallucination ? "the bugs go away."
+                               : "the itching subside.");
     }
     return 1;
 }
@@ -2404,8 +2409,8 @@ do_takeoff()
     context.takeoff.mask &= ~I_SPECIAL; /* clear cancel_doff() flag */
 
     if (otmp && itchy && !hates_gear()) {
-            You_feel(Hallucination ? "the bugs go away."
-                                   : "the itching subside.");
+        You_feel(Hallucination ? "the bugs go away."
+                               : "the itching subside.");
     }
 
     return otmp;
