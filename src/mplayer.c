@@ -212,7 +212,7 @@ register boolean special;
         case PM_PRIEST:
         case PM_PRIESTESS:
             if (rn2(2))
-                weapon = is_elf(ptr) ? QUARTERSTAFF : MACE;
+                weapon = is_elf(ptr) ? CLUB : MACE;
             if (rn2(2))
                 armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
             if (rn2(4))
