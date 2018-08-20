@@ -83,7 +83,7 @@ struct objclass {
 #define is_hated_material(otmp, omat)                       \
     ((omat == IRON && !otmp->oartifact                      \
      && objects[otmp->otyp].oc_material == IRON)            \
-     || omat != IRON && objects[otmp->otyp].oc_material == omat)
+     || (omat != IRON && objects[otmp->otyp].oc_material == omat))
 
 /* primary damage: fire/rust/--- */
 /* is_flammable(otmp), is_rottable(otmp) in mkobj.c */

@@ -528,8 +528,8 @@ int wtcap;
                 && (!Half_physical_damage || !(moves % 2L)))
                 heal = -1;
         } else if (u.mh < u.mhmax) {
-            if (Regeneration || (encumbrance_ok
-                && hates_gear() && !(moves % 20L))) {
+            if ((Regeneration || (encumbrance_ok
+                && !(moves % 20L))) && !hates_gear()) {
                 heal = 1;
             }
         }
@@ -546,7 +546,7 @@ int wtcap;
            once u.mh reached u.mhmax; that may have been convenient
            for the player, but it didn't make sense for gameplay...] */
         if (u.uhp < u.uhpmax && (Regeneration || encumbrance_ok)
-            && hates_gear()) {
+            && !hates_gear()) {
             if (u.ulevel > 9) {
                 if (!(moves % 3L)) {
                     int Con = (int) ACURR(A_CON);
@@ -562,7 +562,6 @@ int wtcap;
                 if (!(moves % (long) ((MAXULEV + 12) / (u.ulevel + 2) + 1)))
                     heal = 1;
             }
-            /* Regeneration ensures the player regains some health each turn */
             if (Regeneration && !heal) {
                 heal = 1;
             }
