@@ -2406,7 +2406,6 @@ do_takeoff()
     if (otmp && itchy && !hates_gear()) {
             You_feel(Hallucination ? "the bugs go away."
                                    : "the itching subside.");
-        }
     }
 
     return otmp;
