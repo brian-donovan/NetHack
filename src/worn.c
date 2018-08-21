@@ -1010,7 +1010,7 @@ struct obj *obj;
     /* Unacceptable Exceptions: */
     /* Checks for object that certain races should never use go here */
     if ((is_elf(ptr) && !is_elven_armor(obj))
-        || (is_demon(ptr) && objects[obj->otyp].oc_material == SILVER)) {
+        || (hates_silver(ptr) && objects[obj->otyp].oc_material == SILVER)) {
         return -1;
     }
     return 0;
