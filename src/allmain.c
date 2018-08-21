@@ -461,50 +461,53 @@ hates_gear()
         return FALSE;
     }
 
+#define IS_HATED_MAT(ob, om)   \
+    (((om == IRON && is_cold_iron(ob)) || (om != IRON && is_material(ob, om))))
+
     /* Find out if the player is wearing anything they hate */
     do {
         if (uarmg) {
-            if (is_hated_material(uarmg, hated)) {
+            if (IS_HATED_MAT(uarmg, hated)) {
                 /* no regeneration if hated material touches a player's skin */
                 break;
             }
         } else {
             /* no gloves, check weapon and shield */
-            if ((uwep && is_hated_material(uwep, hated))
-                || (uarms && is_hated_material(uarms, hated))) {
+            if ((uwep && IS_HATED_MAT(uwep, hated))
+                || (uarms && IS_HATED_MAT(uarms, hated))) {
                 break;
             }
         }
         if (uarmu) {
-            if (is_hated_material(uarmu, hated)) {
+            if (IS_HATED_MAT(uarmu, hated)) {
                 break;
             }
         } else {
             /* no under-armor, check armor */
             if (uarm) {
-                if (is_hated_material(uarm, hated)) {
+                if (IS_HATED_MAT(uarm, hated)) {
                     break;
                 }
             } else {
                 /* no armor, check amulets and cloaks */
-                if ((uarmc && is_hated_material(uarmc, hated))
-                    || (uamul && is_hated_material(uamul, hated))) {
+                if ((uarmc && IS_HATED_MAT(uarmc, hated))
+                    || (uamul && IS_HATED_MAT(uamul, hated))) {
                     break;
                 }
             }
         }
         /* Check the rest of the equipment - helmet, shoes, rings, and any 2h */
-        if ((uswapwep && u.twoweap && is_hated_material(uswapwep, hated))
-            || (uarmh && is_hated_material(uarmh, hated))
-            || (uarmf && is_hated_material(uarmf, hated))
-            || (uleft && is_hated_material(uleft, hated))
-            || (uright && is_hated_material(uright, hated))) {
+        if ((uswapwep && u.twoweap && IS_HATED_MAT(uswapwep, hated))
+            || (uarmh && IS_HATED_MAT(uarmh, hated))
+            || (uarmf && IS_HATED_MAT(uarmf, hated))
+            || (uleft && IS_HATED_MAT(uleft, hated))
+            || (uright && IS_HATED_MAT(uright, hated))) {
             break;
         }
         /* All checks have passed, player isn't wearing anything they hate. */
         result = FALSE;
     } while (result == TRUE);
-
+#undef IS_HATED_MAT
     return result;
 }
 

@@ -1005,15 +1005,16 @@ struct obj *obj;
 
     /* Acceptable Exceptions: */
     /* Allow hobbits to wear elven armor - LoTR */
-    if (ptr == &mons[PM_HOBBIT] && is_elven_armor(obj))
+    if (ptr == &mons[PM_HOBBIT] && is_elven_armor(obj)) {
         return 1;
+    }
     /* Unacceptable Exceptions: */
     /* Checks for object that certain races should never use go here */
-    if ((is_elf(ptr) && !is_elven_armor(obj))
-        || (hates_silver(mon->data) 
-        && objects[obj->otyp].oc_material == SILVER)) {
+    if ((is_elf(ptr) && is_cold_iron(obj))
+        || (hates_silver(mon->data) && is_material(obj, SILVER))) {
         return -1;
     }
+
     return 0;
 }
 /*worn.c*/

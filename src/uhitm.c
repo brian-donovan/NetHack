@@ -288,8 +288,7 @@ int *attk_count, *role_roll_penalty;
             tmp++;
         }
         /* ...but they are averse to cold iron */
-        if (weapon && !weapon->oartifact
-            && objects[weapon->otyp].oc_material == IRON) {
+        if (weapon && is_cold_iron(weapon)) {
             tmp -= 3;
         }
     }
@@ -404,8 +403,7 @@ register struct monst *mtmp;
             if (uwep) {
                 /* Hint to players that elves should not wield iron */
                 if (maybe_polyd(is_elf(youmonst.data), Race_if(PM_ELF))
-                    && !uwep->oartifact
-                    && objects[uwep->otyp].oc_material == IRON) {
+                    && is_cold_iron(uwep)) {
                     You("feel dizzy swinging %s.", yname(uwep));
                 } else {
                     You("begin bashing monsters with %s.", yname(uwep));
