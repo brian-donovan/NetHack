@@ -2355,7 +2355,7 @@ int final;
         } else if (hates_silver(youmonst.data)) {
             you_are("touching silver, and cannot regenerate health", "");
         } else {
-            impossible("player hates mysterious gear")
+            impossible("player hates mysterious gear");
         }
 	} else if (Regeneration) {
         enl_msg("You regenerate", "", "d", "", from_what(REGENERATION));

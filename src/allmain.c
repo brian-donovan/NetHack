@@ -327,7 +327,7 @@ boolean resuming;
                         /* If player hated their gear last turn, show relief. */
                         if (u.hatesgear) {
                             Hallucination
-                                ? You("can feel the bugs going away.");
+                                ? You("can feel the bugs going away.")
                                 : pline("The itching subsides.");
                         }
                         u.hatesgear = FALSE;
