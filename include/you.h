@@ -388,6 +388,7 @@ struct you {
     xchar skill_record[P_SKILL_LIMIT]; /* skill advancements */
     struct skills weapon_skills[P_NUM_SKILLS];
     boolean twoweap;         /* KMH -- Using two-weapon combat */
+    boolean hatesgear;       /* if the player is wearing gear they hate */
 
 }; /* end of `struct you' */
 

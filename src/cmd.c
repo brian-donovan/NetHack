@@ -2349,11 +2349,13 @@ int final;
         you_can("walk through walls", from_what(PASSES_WALLS));
 
     /*** Physical attributes ***/
-    if (hates_gear()) {
+    if (u.hatesgear) {
 	    if (maybe_polyd(is_elf(youmonst.data), Race_if(PM_ELF))) {
             you_are("touching cold iron, and cannot regenerate health", "");
         } else if (hates_silver(youmonst.data)) {
             you_are("touching silver, and cannot regenerate health", "");
+        } else {
+            impossible("player hates mysterious gear")
         }
 	} else if (Regeneration) {
         enl_msg("You regenerate", "", "d", "", from_what(REGENERATION));

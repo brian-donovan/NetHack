@@ -310,6 +310,28 @@ boolean resuming;
                                 deferred_goto();
                         }
                     }
+                    /* Check for hated gear and signal relief if we doffed it */
+                    if (hates_gear()) {
+                        if (!u.hatesgear) {
+                            /* hint to the player if they wore some bad gear */
+                            You_feel(Hallucination
+                                ? "bugs crawling all over."
+                                : "very itchy.");
+                        }
+                        u.hatesgear = TRUE;
+                        /* Pester the player about their bad gear at times */
+                        if (!(moves % 20) && !rn2(3)) {
+                            You_feel("itchy.");
+                        }
+                    } else {
+                        /* If player hated their gear last turn, show relief. */
+                        if (u.hatesgear) {
+                            Hallucination
+                                ? You("can feel the bugs going away.");
+                                : pline("The itching subsides.");
+                        }
+                        u.hatesgear = FALSE;
+                    }
                 }
             } while (youmonst.movement
                      < NORMAL_SPEED); /* hero can't move loop */
@@ -468,7 +490,6 @@ hates_gear()
     do {
         if (uarmg) {
             if (IS_HATED_MAT(uarmg, hated)) {
-                /* no regeneration if hated material touches a player's skin */
                 break;
             }
         } else {
@@ -530,11 +551,9 @@ int wtcap;
             if (u.mh > 1 && !Regeneration && rn2(u.mh) > rn2(8)
                 && (!Half_physical_damage || !(moves % 2L)))
                 heal = -1;
-        } else if (u.mh < u.mhmax) {
-            if ((Regeneration || (encumbrance_ok
-                && !(moves % 20L))) && !hates_gear()) {
-                heal = 1;
-            }
+        } else if (u.mh < u.mhmax && !u.hatesgear
+            && (Regeneration || (encumbrance_ok && !(moves % 20L)))) {
+            heal = 1;
         }
         if (heal) {
             context.botl = 1;
@@ -548,8 +567,8 @@ int wtcap;
            no !Upolyd check here, so poly'd hero recovered lost u.uhp
            once u.mh reached u.mhmax; that may have been convenient
            for the player, but it didn't make sense for gameplay...] */
-        if (u.uhp < u.uhpmax && (Regeneration || encumbrance_ok)
-            && !hates_gear()) {
+        if (u.uhp < u.uhpmax && !u.hatesgear
+            && (Regeneration || encumbrance_ok)) {
             if (u.ulevel > 9) {
                 if (!(moves % 3L)) {
                     int Con = (int) ACURR(A_CON);

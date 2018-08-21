@@ -638,6 +638,7 @@ u_init()
     u.uspellprot = 0;
     adjabil(0, 1);
     u.ulevel = u.ulevelmax = 1;
+    u.hatesgear = 0;
 
     init_uhunger();
     for (i = 0; i <= MAXSPELL; i++)
