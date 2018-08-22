@@ -18,6 +18,7 @@ STATIC_DCL void NDECL(do_positionbar);
 STATIC_DCL void FDECL(regen_hp, (int));
 STATIC_DCL void FDECL(interrupt_multi, (const char *));
 STATIC_DCL void FDECL(debug_fields, (const char *));
+STATIC_DCL void NDECL(check_gear);
 
 void
 moveloop(resuming)
@@ -310,28 +311,7 @@ boolean resuming;
                                 deferred_goto();
                         }
                     }
-                    /* Check for hated gear and signal relief if we doffed it */
-                    if (hates_gear()) {
-                        if (!u.hatesgear) {
-                            u.hatesgear = TRUE;
-                            /* hint to the player if they wore some bad gear */
-                            You_feel(Hallucination
-                                ? "bugs crawling all over."
-                                : "very itchy.");
-                        }
-                        /* Pester the player about their bad gear at times */
-                        if (!(moves % 20) && !rn2(3)) {
-                            You_feel("itchy.");
-                        }
-                    } else {
-                        /* If player hated their gear last turn, show relief. */
-                        if (u.hatesgear) {
-                            u.hatesgear = FALSE;
-                            Hallucination
-                                ? You("can feel the bugs going away.")
-                                : pline("The itching subsides.");
-                        }
-                    }
+                    check_gear();
                 }
             } while (youmonst.movement
                      < NORMAL_SPEED); /* hero can't move loop */
@@ -530,6 +510,33 @@ hates_gear()
     } while (result == TRUE);
 #undef IS_HATED_MAT
     return result;
+}
+
+/* Check for hated gear and signal relief when appropriate. */
+STATIC_DCL void
+check_gear()
+{
+    if (hates_gear()) {
+        if (!u.hatesgear) {
+            u.hatesgear = TRUE;
+            /* hint to the player if they wore some bad gear */
+            You_feel(Hallucination
+                ? "bugs crawling all over."
+                : "very itchy.");
+        }
+        /* Pester the player about their bad gear at times */
+        if (!(moves % 20) && !rn2(3)) {
+            You_feel("itchy.");
+        }
+    } else {
+        /* If player hated their gear last turn, show relief. */
+        if (u.hatesgear) {
+            u.hatesgear = FALSE;
+            Hallucination
+                ? You("can feel the bugs going away.")
+                : pline("The itching subsides.");
+        }
+    }
 }
 
 /* maybe recover some lost health (or lose some when an eel out of water) */
