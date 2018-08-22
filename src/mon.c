@@ -1483,7 +1483,7 @@ struct monst *magr, /* monster that is currently deciding where to move */
     struct permonst *pa = magr->data,*pd = mdef->data;
     
     /* Allow monsters to attack each other when appropriate, beginning with the
-     * famous example of Purple Worms and Shriekers. */
+     * famous example of Purple Worms, which like to eat Shriekers. */
     if ((pa == &mons[PM_PURPLE_WORM] && pd == &mons[PM_SHRIEKER])
         /* elves and orcs */
         || (is_elf(pa) && is_orc(pd)) || (is_orc(pa) && is_elf(pd))
