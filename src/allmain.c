@@ -313,12 +313,12 @@ boolean resuming;
                     /* Check for hated gear and signal relief if we doffed it */
                     if (hates_gear()) {
                         if (!u.hatesgear) {
+                            u.hatesgear = TRUE;
                             /* hint to the player if they wore some bad gear */
                             You_feel(Hallucination
                                 ? "bugs crawling all over."
                                 : "very itchy.");
                         }
-                        u.hatesgear = TRUE;
                         /* Pester the player about their bad gear at times */
                         if (!(moves % 20) && !rn2(3)) {
                             You_feel("itchy.");
@@ -326,11 +326,11 @@ boolean resuming;
                     } else {
                         /* If player hated their gear last turn, show relief. */
                         if (u.hatesgear) {
+                            u.hatesgear = FALSE;
                             Hallucination
                                 ? You("can feel the bugs going away.")
                                 : pline("The itching subsides.");
                         }
-                        u.hatesgear = FALSE;
                     }
                 }
             } while (youmonst.movement

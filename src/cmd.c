@@ -2357,7 +2357,7 @@ int final;
         } else {
             impossible("player hates mysterious gear");
         }
-	} else if (Regeneration) {
+    } else if (Regeneration) {
         enl_msg("You regenerate", "", "d", "", from_what(REGENERATION));
     }
     if (Slow_digestion)
