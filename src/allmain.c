@@ -525,7 +525,7 @@ hates_gear()
             || (uright && IS_HATED_MAT(uright, hated))) {
             break;
         }
-        /* All checks have passed, player isn't wearing anything they hate. */
+
         result = FALSE;
     } while (result == TRUE);
 #undef IS_HATED_MAT
